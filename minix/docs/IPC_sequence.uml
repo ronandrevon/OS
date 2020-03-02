@@ -1,0 +1,49 @@
+@startuml
+participant User
+participant MM
+participant Kernel
+participant Sys_task
+skinparam defaultFontName Helvetica
+
+note left of User
+**<color darkgreen>lib.a/<color blue>fork() </color>**
+  call**<color blue>main</color>**
+  **<color darkgreen>lib.a/<color blue>callx(MM,id)</color>**
+    **<color darkgreen>lib.a/<color blue>sendrec</color>**
+end note
+
+User->Kernel:<color blue> INT SYSVEC</color>
+
+note left of Kernel
+**<color darkgreen>mpx88.s/<color blue>s_call </color>**
+  <color blue>call </color>**<color darkgreen>lib.a/sendrec.s/<color blue>receive(ANY)**
+  **<color darkgreen>lib.a/sendrec.s/<color blue>receive(ANY)**
+    **<color red>INT SYS_VEC</color>**
+  mpx88.s/restart
+    mov sp,_proc_ptr
+end note
+
+
+Kernel->MM:<color blue> iret</color>
+
+note left of MM
+mm/main.c/main()
+    who=pid
+    mm_call=FORK
+    forkexit.c/do_fork
+        lib.a/sys_fork(pid)
+            lib.a/callm1(SYSTASK,SYS_FORK)
+end note
+
+MM->Kernel:<color blue> INT SYSVEC</color>
+Kernel->Sys_task:<color blue> iret</color>
+Sys_task->Kernel:<color blue> INT SYSVEC</color>
+Kernel->Sys_task:<color blue> iret</color>
+Sys_task->Kernel:<color blue> receive(ANY, &m)</color>
+Kernel->MM:<color blue> iret </color>
+MM->Kernel:<color blue> send(pid,&mm_out) </color>
+Kernel->MM:<color blue> send:ready(pid)
+MM->Kernel:<color blue> get_work:receive(ANY) </color>
+Kernel->User:<color blue> iret </color>
+
+@enduml

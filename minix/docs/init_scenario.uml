@@ -1,0 +1,55 @@
+@startuml
+participant Kernel
+participant printer_task
+participant tty_task
+skinparam defaultFontName Helvetica
+
+note left of Kernel
+**<color darkgreen>mpx.s/<color blue>minix </color>**
+  call**<color blue>main</color>**
+  **<color darkgreen>main.c/<color blue>main </color>**
+    //setup process table //
+    **<color darkgreen>proc.c/<color blue>pick_proc</color>**      
+      //<color red>proc_ptr=printer_task</color>//
+    **<color blue>restart</color>**               
+      //<color red>mov sp,proc_ptr</color>//    
+      pop ax,bx,cx,dx,si,di,bp,es
+      //restore splimit,sp,ss//
+      push psw
+      //<color red>push cs, pc</color>//
+      iret  
+end note
+
+
+Kernel->printer_task:<color blue> iret</color>
+note left of printer_task
+**<color darkgreen>printer.c/<color blue>printer_task </color>**
+  <color blue>print_init</color>
+  **<color darkgreen>lib.a/sendrec.s/<color blue>receive(ANY)**
+    **<color red>INT SYS_VEC</color>**
+end note
+
+
+/'##############Back to kernel ##################'/
+printer_task->Kernel:<color blue> Software Interrupt</color>
+note left of Kernel
+**<color green>mpx88.s/<color blue>s_call</color>**
+  call <color blue>save</color>
+  **<color darkgreen>proc.c/<color blue>sys_call</color>**
+    **<color blue>mini_rec(ANY)</color>**        
+      //<color red>printer->p_flags |= RECEIVING</color>//
+      **<color blue>unready(printer)</color>**
+        <color green>klib88.x/<color blue>lock</color>
+        **<color blue>pick_proc</color>**
+          //<color red>proc_ptr=tty_task</color>//
+        <color green>klib88.x/<color blue>restore</color>
+  **jmp <color blue>restart</color>**
+    iret                   
+end note
+
+Kernel->tty_task:<color blue> iret</color>
+note left of tty_task
+**<color green>tty.c/<color blue>tty_task</color>**
+end note
+
+@enduml
