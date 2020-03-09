@@ -1,9 +1,12 @@
-# The init process 
+# The init process
 
-This process is the father (mother) of all MINIX user processes. 
+
+This process is the father (mother) of all MINIX user processes.
 When MINIX comes up, this is process 2.
-It executes the /etc/rc shell file and 
+It executes the /etc/rc shell file and
 then reads the /ect/ttys file to find out which terminals need a login process.
+
+The [fork](/IPC) commands is a system call.
 
 ```
 // init.c : first user space process, linked with libc.a
@@ -11,7 +14,7 @@ main()
 {
   /* Carry out /etc/rc. */
   int tty, k, status, ttynr, ct, i;
-  sync();     /* force buffers out onto RAM disk */ 
+  sync();     /* force buffers out onto RAM disk */
   if (fork()) {
     /* Parent, just wait. */
     wait(&k);
@@ -29,7 +32,7 @@ main()
     startup(ttynr);
   }
   close(tty);
-  
+
   /* All the children have been forked off.  Wait for someone to terminate.*/
   // First ignore all signals.
   for (i = 1; i <= NR_SIGS; i++) signal(i, SIG_IGN);

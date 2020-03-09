@@ -1,17 +1,17 @@
 # Memory layout 
 
-The i8088 : 
+The i8088 memory characteristics are : 
 
-- 16 bit architecture (2-byte word)
-- 1 MB (2^20 addresses) of memory : 
-    - 64K(=2^16) segments
-    - 16(=2^4) bytes per segments
-- addresses are 20-bit (ssssoh) wide : 
-    - 16-bit segment address(ssssh)
-    - 4-bit address offset(oh)
-- 255 entries in interrupt vector table : 
-    - 4-byte wide each as they give the sector of the interrupt routine
-    - 0040h is the first available sector for instructions
+- $16$-bit architecture ($2$-byte word)
+- $1MB=2^{20}$ addresses of memory : 
+    - $64K=2^{16}$ segments
+    - $16=2^4$ bytes per segments
+- addresses are $20$-bit (ssssoh) wide : 
+    - $16$-bit segment address(ssssh)
+    - $4$-bit address offset(oh)
+- $255$ entries in interrupt vector table : 
+    - $4$-byte wide each as they give the sector of the interrupt routine
+    - $0040h$ is the first available sector for instructions
 
 
 ## layout

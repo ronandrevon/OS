@@ -1,0 +1,154 @@
+@startuml
+participant User
+participant MM
+participant Kernel
+participant Sys_task
+skinparam defaultFontName Helvetica
+
+
+/'
+################################################################
+################ User call ######################
+################################################################
+'/
+note left of User
+**<color darkgreen>lib.a/fork.c:[[http://localhost:8001/lib/fork.c fork]]**()
+  **<color darkgreen>call.c:[[http://localhost:8001/lib/call.c callm1]]**(MM,id=syscallnr)
+    **<color blue>callx**(MM,id)
+      m_ptr->m_type=id
+      k=**<color darkgreen>sendrec.s:<color blue>[[http://localhost:8000/IPC/#system-call sendrec]]</color>**(MM,m_ptr)
+end note
+
+/'
+################################################################
+################ First kernel call ######################
+################################################################
+'/
+User->Kernel:<color blue> INT SYSVEC</color>
+note left of Kernel
+**<color darkgreen>mpx88.s:[[http://localhost:8000/IPC/#kernel-call s_call]]**
+  call **<color darkgreen>proc.c:[[http://localhost:8001/kernel/proc.c sys_call]]**(BOTH,id,MM,m_ptr)
+    **minisend**()
+      **cp_mess**(m_ptr,MM->p_messbuf)
+      **<color red>ready**(MM)
+    **mini_rec**()
+      id->p_getfrom = MM
+      id->p_flags |= RECEIVING
+      **<color red>unready**(id)
+        rdy_head[2]=id->p_nextready
+        **pick_proc**()
+          <color red>proc_ptr=rdy_head[1];//MM
+      **inform**(MM_PROC_NR)
+  jmp **<color darkgreen>mpx88.s:<color blue>[[http://localhost:8000/IPC/#restart restart]]**
+    mov sp,_proc_ptr,push cs,push pc
+end note
+
+
+
+/'
+################################################################
+################ First call to MM ##############################
+################################################################
+'/
+Kernel->MM:<color blue>iret</color>
+note left of MM
+**<color darkgreen>mm/main.c:[[http://localhost:8001/mm/main.c main]]**()
+    **get_work**()
+      who=pid
+      mm_call=FORK
+    call_vec[mm_call]
+    => **<color darkgreen>mm/forkexit.c:[[http://localhost:8001/mm/forkexit.c do_fork]]**()
+      mproc[pid].mp_pid=new_pid
+      **<color darkgreen>lib.a/syslib.c:[[http://localhost:8001/lib/syslib.c sys_fork]]**(who,child_nr,new_pid)
+        **call.c:callm1**(SYSTASK,SYS_FORK)
+end note
+
+MM->Kernel:<color blue> INT SYSVEC</color>
+note left of Kernel
+**<color darkgreen>mpx88.s:<color blue>s_call**
+  call **<color darkgreen>proc.c:<color blue>sys_call**(BOTH,id,MM,m_ptr)
+    **<color red>ready(SYSTASK)**
+    **<color red>unready(MM)**
+      <color red>proc_ptr=rdy_head[0];//SYSTASK
+  jmp **<color blue>mpx88.s/restart**
+end note
+
+
+
+/'
+################################################
+################ System Task call ##############
+################################################
+'/
+Kernel->Sys_task:<color blue> iret</color>
+note left of Sys_task
+**<color darkgreen>kernel/system.c:[[http://localhost:8001/kernel/system.c sys_task ]]**()
+  **lib/sendrec.s:receive**(ANY, &m)
+end note
+
+Sys_task->Kernel:<color blue> INT SYSVEC</color>
+note left of Kernel
+  **kernel/proc.c:sys_call**
+    **mini_rec**()
+      **cp_mess**(..);**return** 0;
+  **mpx88.s:restart**
+end note
+
+Kernel->Sys_task:<color blue> iret</color>
+note left of Sys_task
+switch (m.m_type)
+  case SYS_FORK : **<color darkgreen>system.c:<color blue>do_fork**()
+    //copy parent proc struct
+**lib/sendrec.s:send**(MM)
+end note
+Sys_task->Kernel:<color blue> INT SYSVEC</color>
+
+
+note left of Sys_task
+**mpx88.s:s_call => system.c:sys_call()**
+  **mini_send**()
+    **<color red>unready**(SYS_TASK)
+      <color red>proc_ptr=rdy_head[1];//MM
+**mpx88.s:restart**
+end note
+
+/'
+################################################
+################ Back to MM ####################
+################################################
+'/
+
+Kernel->MM:<color blue> iret </color>
+note left of MM
+**<color darkgreen>mm/forkexit.c<color blue>do_fork**()
+  **<color darkgreen>mm/main.c::<color blue>reply**(child_nr,0)
+    **lib/sendrec.s:send**(child_nr,mm_out)
+end note
+MM->Kernel:<color blue> INT SYSVEC </color>
+note left of Kernel
+**mpx88.s:s_call => system.c:sys_call()**
+  **mini_send**()
+    **<color red>unready(MM)**
+    **pick_proc**()
+      <color red>proc_ptr=child_nr??
+end note
+
+
+/'
+################################################
+################ Back to USER ##################
+################################################
+'/
+Kernel->User:<color blue> iret </color>
+note left of User
+**<color darkgreen>lib/call.c:<color blue>callx**(MM,id)
+  if k!=OK return(k);
+  if (M.m_type < 0) {errno = -M.m_type; return(-1);}
+  return M.m_type;
+end note
+
+
+/'
+end
+'/
+@enduml

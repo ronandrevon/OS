@@ -11,14 +11,23 @@ markdown_extensions:
         title: Table of Contents
     - attr_list
     - fenced_code
+    - mdx_math:
+        enable_dollar_delimiter: True
+
+extra_javascript:
+ - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML'
 
 nav:
-- 'Index' : 'index.md'
-- 'Building the image' : 'build.md'
-- 'Run' : 
+- 'Index': 'index.md'
+- 'Building the image': 'build.md'
+- 'Run':
     - 'bootstrap' : 'bootstrap.md'
     - 'kernel init' : 'kernel_init.md'
     - 'init process' : 'init.md'
+- 'IPC':
+    - 'main codes' : 'IPC.md'
+    - 'fork example' : 'figures/IPC_sequence.svg'
 - 'Structure':
     - 'memory layout' : 'memory.md'
-    - 'files' : 'files.md'
+    - 'files' : 'src/index.md'
+    - '' : ''
