@@ -1,8 +1,10 @@
+sandbox/
 helenos-0.2.0/
 linux1.0/
 UNIX
-mikeOS/
 MyOS/
+
+#minix
 minix/test_c/
 minix/books/
 minix/minix1.1/
@@ -10,3 +12,9 @@ minix/docs/*.txt
 minix/docs/*.html
 minix/docs/*.c
 minix/docs/*.xlsc
+
+#mikeOS
+mikeOS/sandbox
+mikeOS/mikeos-4.6.1/_arch
+mikeOS/mikeos-4.6.1/disk_images/*
+
