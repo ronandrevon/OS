@@ -31,3 +31,7 @@ nav:
     - 'memory layout' : 'memory.md'
     - 'files' : 'src/index.md'
     - '' : ''
+- 'mikeOS' : 'mikeos/index.md'
+- 'x86' : 
+    - 'nasm' : 'mikeos/nasm.md'
+    - 'x86' : 'mikeos/x86.md'

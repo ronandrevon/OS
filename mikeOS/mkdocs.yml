@@ -19,6 +19,6 @@ extra_javascript:
 nav:
 - 'Index': 'index.md'
 - 'MikeOS' : 'mikeOS.md'
-- 'Programmning' :
+- 'Programmning for x86' :
     - 'nasm' : 'nasm.md'
     - 'x86' : 'x86.md'

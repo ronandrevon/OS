@@ -1,0 +1,29 @@
+MOV              mem,reg_sreg             8086 
+MOV              reg16,reg_sreg           8086 
+MOV              reg_sreg,mem             8086 
+MOV              reg_sreg,reg16           8086 
+MOV              reg_sreg,reg16           8086 
+MOV              reg_al,mem_offs          8086 
+MOV              reg_ax,mem_offs          8086 
+MOV              mem_offs,reg_al          8086 
+MOV              mem_offs,reg_ax          8086 
+MOV              mem,reg8                 8086 
+MOV              reg8,reg8                8086 
+MOV              mem,reg16                8086 
+MOV              reg16,reg16              8086 
+MOV              reg8,mem                 8086 
+MOV              reg8,reg8                8086 
+MOV              reg16,mem                8086 
+MOV              reg16,reg16              8086 
+MOV              reg8,imm                 8086 
+MOV              reg16,imm                8086 
+MOV              rm8,imm                  8086 
+MOV              rm16,imm                 8086 
+MOV              mem,imm8                 8086 
+MOV              mem,imm16                8086 
+
+
+MOV              mem,reg16                8086 
+MOV              reg16,mem                8086 
+MOV              reg_al,mem_offs          8086 
+MOV              reg_ax,mem_offs          8086 

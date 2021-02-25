@@ -5,14 +5,14 @@ minimal x86 compatible 16-bits operating system.
 
 ## Main Features 
 
-- [bootloader](/mikeOS/#bootloader) simple to understand
-- shell [CLI](/mikeOS/#command-line-shell) 
-    for [syscalls](/doc/handbook-appdev-asm.html#syscallintro)
+- [bootloader](mikeOS/#bootloader) simple to understand
+- shell [CLI](mikeOS/#command-line-shell) 
+    for [syscalls](doc/handbook-appdev-asm.html#syscallintro)
     and launching bin/bas files 
 - BASIC interpreter
 - BIOS interrupt calls for keyboard input/screen output 
 - [IO port availability](test) for sound and serial port
-- [file system](/mikeOS/#loading-from-disk) read into the floppy disk *mikeos.flp*
+- [file system](mikeOS/#loading-from-disk) read into the floppy disk *mikeos.flp*
 - segment free [memory layout](doc/handbook-sysdev.html#memorymap) :
     - $0000h - 5FFFh$ : kernel
     - $6000h - 7FFFh$ : kernel disk operation buffer
@@ -30,7 +30,7 @@ It is actually more of a program loader than an OS since major aspects are missi
 - io port manager
 
 ## Building
-`./build-linux.sh`
+`./build-linux.sh`  
 
 ```
 echo ">>> Assembling ..."

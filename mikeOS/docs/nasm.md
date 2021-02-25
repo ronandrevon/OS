@@ -1,3 +1,8 @@
+# NASM code example
+
+[NASM](https://www.nasm.us/doc/nasmdoc0.html) is an assembly language which can
+compile for x86 architecture.
+
 ```
 BITS 16             ; nasm compiler 16 bits
 

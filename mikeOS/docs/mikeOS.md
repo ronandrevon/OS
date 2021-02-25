@@ -3,10 +3,12 @@
 
 ## bootloader
 
+An extremely good [tuto](http://mikeos.sourceforge.net/write-your-own-os.html)
+on building an image and running it on a virtual machine.
 After loading the kernel at segment $2000h$ and setting up thefile system, 
 the [bootloader](src/bootload/bootload.asm) 
 jumps to relative address $0000h$ :
-```
+```C
 //bootload/bootload.asm
     jmp 2000h:0000h ; //Jump to entry point of loaded kernel!
 ```
@@ -14,7 +16,7 @@ jumps to relative address $0000h$ :
 ## kernel
 
 The [kernel](src/kernel.asm) starts executing the code : 
-```
+```C
 /*kernel.asm*/
 os_call_vectors : 
     jmp os_main
@@ -34,7 +36,7 @@ which then starts executing the [command line shell](src/features/cli.asm).
 ## command line shell 
 
 The shell prompts for [user input](#user-input) and analyzes the command : 
-```
+```C
 //features/cli.asm
 os_command_line : 
     call os_clear_screen
@@ -66,7 +68,8 @@ Once the command is analized it either executes a system call,
 or [load](#loading-from-disk) a binary file *.bin* or basic file *.bas* 
 (into address $8000h=32768$) and executes it.
 :
-```
+
+```C
 /*features/cli.asm*/
 bin_file : 
     mov ax,command;mov bx, 0;mov cs,32768; call os_load_file
@@ -82,12 +85,11 @@ bas_file :
     jmp get_cmd
 ```
 
-
 ## user input
 
 The user is often prompted for input via pressing keys 
 on the [keyboard](keyboard-key-pressed) : 
-```
+```C
 //features/screen.asm 
 os_input_string : 
     pusha;cmp bx,0;je .done     ;//character count is zero?
@@ -111,7 +113,7 @@ os_input_string :
 ## keyboard key pressed
 
 keyboard strokes are obtained through the BIOS interrupt : 
-```
+```C
 //features/keyboard.asm
 os_wait_for_key:
     mov ah, 0x11;int 0x16   ;//poll key press
@@ -127,7 +129,7 @@ os_wait_for_key:
 
 Reading from [disk](/src/disk.asm) can be used to load a file such as a binary : 
 
-```
+```C
 /*features/disk.asm*/
 os_load_file:
     call os_string_uppercase
