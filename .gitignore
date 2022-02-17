@@ -3,6 +3,7 @@ helenos-0.2.0/
 linux1.0/
 UNIX
 MyOS/
+linux/**
 
 #minix
 minix/test_c/
@@ -12,9 +13,11 @@ minix/docs/*.txt
 minix/docs/*.html
 minix/docs/*.c
 minix/docs/*.xlsc
+minix/src
+minix/obj.i386
 
 #mikeOS
 mikeOS/sandbox
+mikeOS/ronix
 mikeOS/mikeos-4.6.1/_arch
 mikeOS/mikeos-4.6.1/disk_images/*
-

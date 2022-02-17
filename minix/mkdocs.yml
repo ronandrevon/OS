@@ -11,11 +11,11 @@ markdown_extensions:
         title: Table of Contents
     - attr_list
     - fenced_code
-    - mdx_math:
-        enable_dollar_delimiter: True
-
-extra_javascript:
- - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML'
+#     - mdx_math:
+#         enable_dollar_delimiter: True
+#
+# extra_javascript:
+#  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML'
 
 nav:
 - 'Index': 'index.md'
@@ -31,7 +31,7 @@ nav:
     - 'memory layout' : 'memory.md'
     - 'files' : 'src/index.md'
     - '' : ''
-- 'mikeOS' : 'mikeos/index.md'
-- 'x86' : 
-    - 'nasm' : 'mikeos/nasm.md'
-    - 'x86' : 'mikeos/x86.md'
+# - 'mikeOS' : 'mikeos/index.md'
+# - 'x86' :
+#     - 'nasm' : 'mikeos/nasm.md'
+#     - 'x86' : 'mikeos/x86.md'

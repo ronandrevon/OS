@@ -1,0 +1,19 @@
+site_name: OS
+site_author: Tarik Ronan Drevon
+
+docs_dir: 'docs'
+site_dir: 'site'
+
+theme: readthedocs
+markdown_extensions:
+    - wikilinks
+    - toc:
+        title: Table of Contents
+    - attr_list
+    - fenced_code
+    - pymdownx.highlight
+    - pymdownx.critic
+    - pymdownx.tasklist
+
+nav:
+ - Index: 'README.md'

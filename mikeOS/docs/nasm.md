@@ -3,6 +3,8 @@
 [NASM](https://www.nasm.us/doc/nasmdoc0.html) is an assembly language which can
 compile for x86 architecture.
 
+
+
 ```
 BITS 16             ; nasm compiler 16 bits
 
@@ -40,3 +42,6 @@ print_string:           ; Routine: output string in SI to screen
     times 510-($-$$) db 0   ; Pad remainder of boot sector with 0s
     dw 0xAA55       ; The standard PC boot signature
 ```
+
+## Specific instructions
+`pusha`, `popa` pushes and pops all general purpose registers to the stack

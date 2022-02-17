@@ -17,8 +17,8 @@ extra_javascript:
  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML'
 
 nav:
-- 'Index': 'index.md'
-- 'MikeOS' : 'mikeOS.md'
-- 'Programmning for x86' :
-    - 'nasm' : 'nasm.md'
-    - 'x86' : 'x86.md'
+- Index : 'index.md'
+- MikeOS : 'mikeOS.md'
+- Programmning for x86' :
+    - nasm : 'nasm.md'
+    - x86 : 'x86.md'
